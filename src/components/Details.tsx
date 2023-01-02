@@ -6,7 +6,7 @@ interface Props {
 
 function Details(props: Props) {
   return (
-    <div className='shadow w-10/12 rounded-2xl flex flex-col justify-center bg-white xl:w-[80%] mt-8 xl:flex-row xl:h-40 '>
+    <div className='shadow w-10/12 rounded-2xl flex flex-col grid-rows-4 justify-center bg-white xl:w-[80%] mt-8 xl:flex-row xl:h-40 '>
         <div className='flex flex-col justify-center align-middle text-center my-2 xl:mr-16'>
             <p className='font-rubik uppercase text-sm text-slate-400 text-[10px] xl:text-left xl:text-[15px]'>IP Address</p>
             <h2 className=' text-[20px] font-[500]'>{props.ipAdress}</h2>
