@@ -55,15 +55,15 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col justify-center	items-center w-full	h-full bg-no-repeat  bg-top
-		bg-[url('./assets/pattern-bg.png')] bg-[length:100%_60%]">
+		bg-[url('./assets/pattern-bg.png')] bg-[length:100%_49%]">
       <Header/>
       <Input onSubmitHandler={onSubmitHandler} inputChangeHandler={inputChangeHandler} />
       <Details ipAdress={ipAdress}/>
-      <div>
+      <div className='w-full '>
 <MapContainer 
       
           center={[lat, long]}
-          zoom={13}
+          zoom={9}
           zoomControl={false}
           scrollWheelZoom={false}
         >
