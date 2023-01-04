@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import "./App.css";
+import { getUsers } from './components/Api';
 
 
 
@@ -14,6 +15,22 @@ function App() {
 const [ipAdress, setIpAdress] = useState("");
 const [lat, setLat] = useState(41.716667);
 const [long, setLong] = useState(44.783333); 
+const [user, setUser] = useState<any>([]);
+const [location, setLocation] = useState("");
+const [timezone, setTimezone] = useState("");
+const [isp, setIsp] = useState("");
+
+
+
+console.log(user)
+
+useEffect(() => {
+  const getData = async () => {
+    const  data  = await getUsers(ipAdress);
+    setUser(data);
+  };
+  getData();
+}, [ipAdress]);
 
 const svgIcon = L.divIcon({
   html: `
@@ -29,15 +46,41 @@ const svgIcon = L.divIcon({
 
 L.Marker.prototype.options.icon = svgIcon;
 
-interface FormDataType {ipAdress:string};
-const responseBody: FormDataType = {ipAdress: ""};
+interface FormDataType {
+  ipAdress:string;
+  location: {
+  city: string ;
+  country: string;
+  geonameId: string;
+  lat: string;
+  lng: string;
+  postalCode: string;
+  region: string;
+  timezone: string;
+  };
+  isp: string};
+const responseBody: FormDataType = {ipAdress: "", location: {city: "" ,
+  country: "",
+  geonameId: "",
+  lat: "",
+  lng: "",
+  postalCode: "",
+  region: "",
+  timezone: ""},  isp: ""};
 
 const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
-  responseBody.ipAdress = ipAdress
+  responseBody.ipAdress = ipAdress;
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLat(user.location.lat);
+    setLong(user.location.lng);
+  });
 }
-const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>)  => {
   setIpAdress(event.target.value)
+  setLocation(user.location.city)
+  setTimezone(user.location.timezone)
+  setIsp(user.isp)
 }
 
 function ChangeView({ center }: any) {
@@ -46,19 +89,19 @@ function ChangeView({ center }: any) {
   return null;
 }
 
-useEffect(() => {
-  navigator.geolocation.getCurrentPosition((position) => {
-  setLat(position.coords.latitude);
-  setLong(position.coords.longitude);
-});
-}, []);
+// useEffect(() => {
+//   navigator.geolocation.getCurrentPosition((position) => {
+//   setLat(user.location.lat);
+//   setLong(user.location.lng);
+// });
+// }, [user.location.lat, user.location.lng]);
 
   return (
     <div className="flex flex-col justify-center	items-center w-full	h-full bg-no-repeat  bg-top
 		bg-[url('./assets/pattern-bg.png')] bg-[length:100%_49%]">
       <Header/>
       <Input onSubmitHandler={onSubmitHandler} inputChangeHandler={inputChangeHandler} />
-      <Details ipAdress={ipAdress}/>
+      <Details ipAdress={ipAdress} location={location} timezone={timezone} isp={isp}/>
       <div className='w-full '>
 <MapContainer 
       
