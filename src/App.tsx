@@ -74,13 +74,13 @@ const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
   navigator.geolocation.getCurrentPosition((position) => {
     setLat(user.location.lat);
     setLong(user.location.lng);
+    setLocation(user.location.region);
+    setTimezone(user.location.timezone)
+    setIsp(user.isp)
   });
 }
 const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>)  => {
   setIpAdress(event.target.value)
-  setLocation(user.location.city)
-  setTimezone(user.location.timezone)
-  setIsp(user.isp)
 }
 
 function ChangeView({ center }: any) {
